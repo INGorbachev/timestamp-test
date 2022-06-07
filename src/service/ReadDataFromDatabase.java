@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ReadDataFromDatabase {
 
-    public static void printData() throws SQLException {
+    public static void printData() {
 
         var sql = """
                 SELECT * 
@@ -21,6 +21,8 @@ public class ReadDataFromDatabase {
             while (resultSet.next()) {
                 System.out.println(resultSet.getString("data"));
             }
+        } catch (SQLException e) {
+            System.out.println("Соединение медленное");
         }
     }
 }

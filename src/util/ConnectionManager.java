@@ -21,16 +21,22 @@ public final class ConnectionManager {
         }
     }
 
-    public static Connection open() {
-        try {
-            return DriverManager.getConnection(
-                    PropertiesUtil.get(URL_KEY),
-                    PropertiesUtil.get(USERNAME_KEY),
-                    PropertiesUtil.get(PASSWORD_KEY)
-            );
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public static Connection open() throws SQLException {
+
+        Connection connection = null;
+        while (true) {
+            try {
+                connection = DriverManager.getConnection(
+                        PropertiesUtil.get(URL_KEY),
+                        PropertiesUtil.get(USERNAME_KEY),
+                        PropertiesUtil.get(PASSWORD_KEY)
+                );
+                connection.setNetworkTimeout(null, 5000);
+
+            } catch (SQLException e) {
+                System.out.println("Соединение отсутствует");
+            }
+            return connection;
         }
     }
-
 }
